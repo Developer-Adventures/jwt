@@ -9,7 +9,10 @@ namespace JWT
     {
         HS256,
         HS384,
-        HS512
+        HS512,
+        RS256,
+        RS384,
+        RS512
     }
 
     /// <summary>
@@ -32,7 +35,10 @@ namespace JWT
             {
                 { JwtHashAlgorithm.HS256, (key, value) => { using (var sha = new HMACSHA256(key)) { return sha.ComputeHash(value); } } },
                 { JwtHashAlgorithm.HS384, (key, value) => { using (var sha = new HMACSHA384(key)) { return sha.ComputeHash(value); } } },
-                { JwtHashAlgorithm.HS512, (key, value) => { using (var sha = new HMACSHA512(key)) { return sha.ComputeHash(value); } } }
+                { JwtHashAlgorithm.HS512, (key, value) => { using (var sha = new HMACSHA512(key)) { return sha.ComputeHash(value); } } },
+                { JwtHashAlgorithm.RS256, (key, value) => { using (var sha = new HMACSHA256(key)) { return sha.ComputeHash(value); } } },
+                { JwtHashAlgorithm.RS384, (key, value) => { using (var sha = new HMACSHA384(key)) { return sha.ComputeHash(value); } } },
+                { JwtHashAlgorithm.RS512, (key, value) => { using (var sha = new HMACSHA512(key)) { return sha.ComputeHash(value); } } }
             };
         }
 
@@ -156,7 +162,7 @@ namespace JWT
             var payloadData = JsonSerializer.Deserialize<Dictionary<string, object>>(payloadJson);
             if (payloadData.ContainsKey("exp") && payloadData["exp"] != null)
             {
-                // safely unpack a boxed int 
+                // safely unpack a boxed int
                 int exp;
                 try
                 {
